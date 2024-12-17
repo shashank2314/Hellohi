@@ -5,10 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
-    "start": "nodemon backend/index.js",
-    "server": "cd frontend && npm run dev",
-    "dev": "concurrently -n \"server,client\" -c \"bgBlue,bgYellow\" \"npm start\" \"npm run server\""
+    "build": "npm install && npm run build",
+    "start": "nodemon index.js",
+    "dev": "npm start"
   },
   "keywords": [],
   "author": "",
