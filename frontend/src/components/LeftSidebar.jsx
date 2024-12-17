@@ -3,11 +3,11 @@ import React, { useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { toast } from 'sonner'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { setAuthUser } from '@/redux/authSlice'
+import { setAuthUser } from '../redux/authSlice'
 import CreatePost from './CreatePost'
-import { setPosts, setSelectedPost } from '@/redux/postSlice'
+import { setPosts, setSelectedPost } from '../redux/postSlice'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Button } from './ui/button'
 
@@ -17,7 +17,7 @@ const LeftSidebar = () => {
     const { likeNotification } = useSelector(store => store.realTimeNotification);
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
-
+    
 
     const logoutHandler = async () => {
         try {
@@ -67,7 +67,7 @@ const LeftSidebar = () => {
         { icon: <LogOut />, text: "Logout" },
     ]
     return (
-        <div className='fixed top-0 z-10 left-0 px-4 border-r border-gray-300 w-[16%] h-screen'>
+        <div className='fixed top-0 z-10 left-0 px-4 border-r border-gray-300 w-[300px] h-screen md:w-[270px] sm:[150px]'>
             <div className='flex flex-col'>
                 <h1 className='my-8 pl-3 font-bold text-xl'>LOGO</h1>
                 <div>
@@ -76,7 +76,7 @@ const LeftSidebar = () => {
                             return (
                                 <div onClick={() => sidebarHandler(item.text)} key={index} className='flex items-center gap-3 relative hover:bg-gray-100 cursor-pointer rounded-lg p-3 my-3'>
                                     {item.icon}
-                                    <span>{item.text}</span>
+                                    <span className={`hidden md:flex`}>{item.text}</span>
                                     {
                                         item.text === "Notifications" && likeNotification.length > 0 && (
                                             <Popover>

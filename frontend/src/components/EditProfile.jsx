@@ -8,7 +8,7 @@ import axios from 'axios';
 import { Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { setAuthUser } from '@/redux/authSlice';
+import { setAuthUser } from '../redux/authSlice';
 
 const EditProfile = () => {
     const imageRef = useRef();
