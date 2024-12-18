@@ -22,8 +22,10 @@ const LeftSidebar = () => {
     const logoutHandler = async () => {
         try {
             const BASE_URL = import.meta.env.VITE_SERVER_URL;
+
             const res = await axios.get(`${BASE_URL}/api/v1/user/logout`, { withCredentials: true });
             if (res.data.success) {
+                sessionStorage.removeItem("accessToken");
                 dispatch(setAuthUser(null));
                 dispatch(setSelectedPost(null));
                 dispatch(setPosts([]));
