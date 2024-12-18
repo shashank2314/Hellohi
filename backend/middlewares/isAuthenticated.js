@@ -5,6 +5,7 @@ dotenv.config();
 const isAuthenticated = async (req,res,next)=>{
     try {
         const accessToken = req.cookies.accessToken;
+        console.log("accessToken",accessToken);
         if(!accessToken){
             return res.status(401).json({
                 message:'User not authenticated',
