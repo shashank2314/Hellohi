@@ -79,7 +79,7 @@ export const login = async (req, res) => {
         user.refreshToken.push(refreshTokenInstance._id);
         user.posts = populatedPosts;
         await user.save();
-        return res.cookie('accessToken', accessToken, { httpOnly: true, sameSite: 'strict', maxAge: 1 * 24 * 60 * 60 * 1000 }).cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict', maxAge: 10 * 24 * 60 * 60 * 1000 }).json({
+        return res.cookie('accessToken', accessToken, { httpOnly: true, sameSite: 'None', maxAge: 1 * 24 * 60 * 60 * 1000 }).cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'None', maxAge: 10 * 24 * 60 * 60 * 1000 }).json({
             message: `Welcome back ${user.username}`,
             success: true,
             user:{
@@ -142,8 +142,8 @@ export const refreshAccessToken = async (req, res) => {
 
         return res
             .status(200)
-            .cookie('accessToken', accessToken, { httpOnly: true, sameSite: 'strict', maxAge: 1 * 24 * 60 * 60 * 1000 })
-            .cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict', maxAge: 10 * 24 * 60 * 60 * 1000 })
+            .cookie('accessToken', accessToken, { httpOnly: true, sameSite: 'None', maxAge: 1 * 24 * 60 * 60 * 1000 })
+            .cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'None', maxAge: 10 * 24 * 60 * 60 * 1000 })
             .json({
                 message: "Access token refreshed",
                 success: true,
