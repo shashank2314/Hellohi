@@ -35,7 +35,8 @@ const CreatePost = ({ open, setOpen }) => {
     if (imagePreview) formData.append("image", file);
     try {
       setLoading(true);
-      const res = await axios.post(import.meta.env.VITE_SERVER_URL +'/api/v1/post/addpost', formData, {
+      const BASE_URL = import.meta.env.VITE_SERVER_URL;
+      const res = await axios.post(`${BASE_URL}/api/v1/post/addpost`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },

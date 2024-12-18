@@ -17,8 +17,9 @@ const ChatPage = () => {
 
   const sendMessageHandler = async (receiverId) => {
     try {
+      const BASE_URL = import.meta.env.VITE_SERVER_URL;
       const res = await axios.post(
-        import.meta.env.VITE_SERVER_URL + `/api/v1/message/send/${receiverId}`,
+        `${BASE_URL}/api/v1/message/send/${receiverId}`,
         { textMessage },
         {
           headers: {
