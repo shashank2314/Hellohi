@@ -79,7 +79,7 @@ export const login = async (req, res) => {
         user.refreshToken.push(refreshTokenInstance._id);
         user.posts = populatedPosts;
         await user.save();
-        return res.cookie('accessToken', accessToken, { httpOnly: true, sameSite: 'None', maxAge: 1 * 24 * 60 * 60 * 1000 }).cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'None', maxAge: 10 * 24 * 60 * 60 * 1000 }).json({
+        return res.cookie('accessToken', accessToken, { httpOnly: true,secure:true, sameSite: 'None', maxAge: 1 * 24 * 60 * 60 * 1000 }).cookie('refreshToken', refreshToken, { httpOnly: true, secure:true, sameSite: 'None', maxAge: 10 * 24 * 60 * 60 * 1000 }).json({
             message: `Welcome back ${user.username}`,
             success: true,
             user:{
@@ -142,8 +142,8 @@ export const refreshAccessToken = async (req, res) => {
 
         return res
             .status(200)
-            .cookie('accessToken', accessToken, { httpOnly: true, sameSite: 'None', maxAge: 1 * 24 * 60 * 60 * 1000 })
-            .cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'None', maxAge: 10 * 24 * 60 * 60 * 1000 })
+            .cookie('accessToken', accessToken, { httpOnly: true, secure:true,sameSite: 'None', maxAge: 1 * 24 * 60 * 60 * 1000 })
+            .cookie('refreshToken', refreshToken, { httpOnly: true,secure:true, sameSite: 'None', maxAge: 10 * 24 * 60 * 60 * 1000 })
             .json({
                 message: "Access token refreshed",
                 success: true,
@@ -159,9 +159,7 @@ export const refreshAccessToken = async (req, res) => {
 
 export const logout = async (req, res) => {
     try {
-        // res.clearCookie('accessToken');
-        // res.clearCookie('refreshToken');
-
+        
         const refreshToken = req.cookies.refreshToken;
         const decodedToken = jwt.verify(
             refreshToken,
@@ -171,7 +169,9 @@ export const logout = async (req, res) => {
         user.refreshToken = user.refreshToken.filter(token => token.refreshToken !== refreshToken);
         await user.save();
         await RefreshToken.deleteOne({ refreshToken });
-        return res.cookie("accessToken", "", { maxAge: 0 }).cookie("refreshToken", "", { maxAge: 0 }).json({
+        res.clearCookie('accessToken');
+        res.clearCookie('refreshToken');
+        return res.json({
             message: 'Logged out successfully.',
             success: true
         });
