@@ -9,7 +9,8 @@ const useGetSuggestedUsers = () => {
     useEffect(() => {
         const fetchSuggestedUsers = async () => {
             try {
-                const res = await axios.get(import.meta.env.VITE_SERVER_URL+'/api/v1/user/suggested', { withCredentials: true });
+                const BASE_URL = import.meta.env.VITE_SERVER_URL;
+                const res = await axios.get(`${BASE_URL}/api/v1/user/suggested`, { withCredentials: true });
                 if (res.data.success) { 
                     dispatch(setSuggestedUsers(res.data.users));
                 }

@@ -10,7 +10,8 @@ const useGetAllMessage = () => {
     useEffect(() => {
         const fetchAllMessage = async () => {
             try {
-                const res = await axios.get(import.meta.env.VITE_SERVER_URL+`/api/v1/message/all/${selectedUser?._id}`, { withCredentials: true });
+                const BASE_URL = import.meta.env.VITE_SERVER_URL;
+                const res = await axios.get(`${BASE_URL}/api/v1/message/all/${selectedUser?._id}`, { withCredentials: true });
                 if (res.data.success) {  
                     dispatch(setMessages(res.data.messages));
                 }
