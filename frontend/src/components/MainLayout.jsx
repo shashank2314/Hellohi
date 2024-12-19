@@ -6,9 +6,9 @@ import LeftSidebar from './LeftSidebar'
 const MainLayout = () => {
   console.log("hii");
   return (
-    <div className='flex flex-row w-[99vw] justify-between align-start'>
-      <div className='float-left w-full relative'><LeftSidebar /></div>
-      <div className='float-right w-full relative'>
+    <div className='flex flex-row w-[95vw] md:w-[98vw] justify-between align-start'>
+      <div className='w-[100px] md:w-[200px]'><LeftSidebar /></div>
+      <div className='w-full'>
         <Outlet />
       </div>
     </div>

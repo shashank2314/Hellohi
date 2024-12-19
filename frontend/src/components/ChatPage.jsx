@@ -44,11 +44,11 @@ const ChatPage = () => {
   }, []);
 
   return (
-    <div className="flex flex-col md:flex-row h-screen">
+    <div className="flex flex-col md:flex-row gap-4 h-screen w-full">
       {/* Sidebar */}
-      <section className="w-full md:w-1/3 lg:w-1/4 p-4 border-r border-gray-300 overflow-y-auto h-[40vh] md:h-full">
+      <div className="w-full md:w-1/2 lg:w-1/3 pr-8 border-r border-gray-300 overflow-y-auto h-[40vh] md:h-full">
         <h1 className="font-bold text-lg mb-4">{user?.username}</h1>
-        <hr className="mb-4 border-gray-300" />
+        <hr className="mb-4 border-gray-300 w-full" />
         <div className="space-y-4">
           {suggestedUsers.map((suggestedUser, index) => {
             const isOnline = onlineUsers.includes(suggestedUser?._id);
@@ -76,11 +76,11 @@ const ChatPage = () => {
             );
           })}
         </div>
-      </section>
+      </div>
 
       {/* Chat Section */}
       {selectedUser ? (
-        <section className="flex flex-col flex-1 h-full">
+        <div className="flex w-full flex-col flex-1 h-full">
           {/* Chat Header */}
           <div className="flex items-center gap-3 p-4 border-b border-gray-300 sticky top-0 bg-white z-10">
             <Avatar>
@@ -110,9 +110,9 @@ const ChatPage = () => {
               Send
             </Button>
           </div>
-        </section>
+        </div>
       ) : (
-        <div className="flex flex-col items-center justify-center flex-1 p-8">
+        <div className="flex w-full flex-col items-center justify-center flex-1 p-8">
           <MessageCircleCode className="w-32 h-32 mb-4 text-gray-500" />
           <h1 className="font-medium text-lg">Your messages</h1>
           <span className="text-sm text-gray-500">

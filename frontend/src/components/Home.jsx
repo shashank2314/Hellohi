@@ -9,12 +9,14 @@ const Home = () => {
     useGetAllPost();
     useGetSuggestedUsers();
     return (
-        <div className='flex justify-between'>
-            <div className='flex-grow'>
+        <div className='flex justify-between gap-2'>
+            <div className='w-full'>
                 <Feed />
                 <Outlet />
             </div>
-            <RightSidebar />
+            <div className='hidden md:flex float-right'>
+                <RightSidebar />
+            </div>
         </div>
     )
 }

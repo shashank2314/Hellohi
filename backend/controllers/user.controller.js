@@ -196,40 +196,60 @@ export const getProfile = async (req, res) => {
 
 export const editProfile = async (req, res) => {
     try {
-        const userId = req.id;
+        const userId = req.id; // Assuming user ID is passed from middleware
         const { bio, gender } = req.body;
         const profilePicture = req.file;
         let cloudResponse;
 
+        // Handle profile picture upload to Cloudinary
         if (profilePicture) {
-            const fileUri = getDataUri(profilePicture);
-            cloudResponse = await cloudinary.uploader.upload(fileUri);
+            try {
+                const fileUri = getDataUri(profilePicture);
+                cloudResponse = await cloudinary.uploader.upload(fileUri);
+            } catch (cloudError) {
+                console.error(cloudError);
+                return res.status(500).json({
+                    message: 'Failed to upload image.',
+                    success: false,
+                });
+            }
         }
 
+        // Find user in the database
         const user = await User.findById(userId).select('-password');
         if (!user) {
             return res.status(404).json({
                 message: 'User not found.',
-                success: false
+                success: false,
             });
-        };
+        }
+
+        // Update user fields
         if (bio) user.bio = bio;
         if (gender) user.gender = gender;
         if (profilePicture) user.profilePicture = cloudResponse.secure_url;
 
         await user.save();
 
+        // Return response
         return res.status(200).json({
-            message: 'Profile updated.',
+            message: 'Profile updated successfully.',
             success: true,
-            user
+            user: {
+                bio: user.bio,
+                gender: user.gender,
+                profilePicture: user.profilePicture,
+            },
         });
-
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ message: 'Server error', success: false });
+        return res.status(500).json({
+            message: 'Server error.',
+            success: false,
+        });
     }
 };
+
 export const getSuggestedUsers = async (req, res) => {
     try {
         const suggestedUsers = await User.find({ _id: { $ne: req.id } }).select("-password");
@@ -275,14 +295,18 @@ export const followOrUnfollow = async (req, res) => {
                 User.updateOne({ _id: followKrneWala }, { $pull: { following: jiskoFollowKrunga } }),
                 User.updateOne({ _id: jiskoFollowKrunga }, { $pull: { followers: followKrneWala } }),
             ])
-            return res.status(200).json({ message: 'Unfollowed successfully', success: true });
+            const suggestedUsers = await User.find({ _id: { $ne: req.id } }).select("-password");
+            const user2 = await User.findById(followKrneWala).select("-password");
+            return res.status(200).json({ message: 'Unfollowed successfully', success: true,suggestedUsers,user:user2 });
         } else {
             // follow logic ayega
             await Promise.all([
                 User.updateOne({ _id: followKrneWala }, { $push: { following: jiskoFollowKrunga } }),
                 User.updateOne({ _id: jiskoFollowKrunga }, { $push: { followers: followKrneWala } }),
             ])
-            return res.status(200).json({ message: 'followed successfully', success: true });
+            const suggestedUsers = await User.find({ _id: { $ne: req.id } }).select("-password");
+            const user2 = await User.findById(followKrneWala).select("-password");
+            return res.status(200).json({ message: 'followed successfully', success: true,suggestedUsers,user:user2 });
         }
     } catch (error) {
         console.error(error);
